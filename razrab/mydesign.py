@@ -1,0 +1,102 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file '.\UI\Form.ui'
+#
+# Created by: PyQt5 UI code generator 5.12.2
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.setWindowModality(QtCore.Qt.ApplicationModal)
+        MainWindow.setEnabled(True)
+        MainWindow.resize(502, 383)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(160, 0, 121, 31))
+        self.label.setObjectName("label")
+        self.Server = QtWidgets.QLabel(self.centralwidget)
+        self.Server.setGeometry(QtCore.QRect(10, 0, 111, 31))
+        self.Server.setObjectName("Server")
+        self.NickName = QtWidgets.QLabel(self.centralwidget)
+        self.NickName.setGeometry(QtCore.QRect(400, 0, 91, 31))
+        self.NickName.setObjectName("NickName")
+        self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(130, 330, 371, 31))
+        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.InputSend = QtWidgets.QLineEdit(self.horizontalLayoutWidget)
+        self.InputSend.setMinimumSize(QtCore.QSize(0, 0))
+        self.InputSend.setBaseSize(QtCore.QSize(0, 0))
+        self.InputSend.setObjectName("InputSend")
+        self.horizontalLayout.addWidget(self.InputSend)
+        self.Send = QtWidgets.QPushButton(self.horizontalLayoutWidget)
+        self.Send.setObjectName("Send")
+        self.horizontalLayout.addWidget(self.Send)
+        self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
+        self.scrollArea.setGeometry(QtCore.QRect(130, 30, 371, 301))
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName("scrollArea")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 369, 299))
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.Chat = QtWidgets.QTextEdit(self.scrollAreaWidgetContents)
+        self.Chat.setGeometry(QtCore.QRect(0, 0, 371, 301))
+        self.Chat.setObjectName("Chat")
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.scrollArea_2 = QtWidgets.QScrollArea(self.centralwidget)
+        self.scrollArea_2.setGeometry(QtCore.QRect(-1, 29, 131, 331))
+        self.scrollArea_2.setWidgetResizable(True)
+        self.scrollArea_2.setObjectName("scrollArea_2")
+        self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 129, 329))
+        self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
+        self.ClientOnline = QtWidgets.QTextEdit(self.scrollAreaWidgetContents_2)
+        self.ClientOnline.setGeometry(QtCore.QRect(0, 0, 131, 331))
+        self.ClientOnline.setObjectName("ClientOnline")
+        self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 502, 21))
+        self.menubar.setObjectName("menubar")
+        self.menuFile = QtWidgets.QMenu(self.menubar)
+        self.menuFile.setObjectName("menuFile")
+        self.menuAbout = QtWidgets.QMenu(self.menubar)
+        self.menuAbout.setObjectName("menuAbout")
+        MainWindow.setMenuBar(self.menubar)
+        self.actionExit = QtWidgets.QAction(MainWindow)
+        self.actionExit.setObjectName("actionExit")
+        self.actionNew_serwer = QtWidgets.QAction(MainWindow)
+        self.actionNew_serwer.setObjectName("actionNew_serwer")
+        self.actionAbout_programm = QtWidgets.QAction(MainWindow)
+        self.actionAbout_programm.setObjectName("actionAbout_programm")
+        self.menuFile.addAction(self.actionNew_serwer)
+        self.menuFile.addAction(self.actionExit)
+        self.menuAbout.addAction(self.actionAbout_programm)
+        self.menubar.addAction(self.menuFile.menuAction())
+        self.menubar.addAction(self.menuAbout.menuAction())
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "LimontikaChat"))
+        self.label.setText(_translate("MainWindow", "Chat by Limontika"))
+        self.Server.setText(_translate("MainWindow", "Server:"))
+        self.NickName.setText(_translate("MainWindow", "Name: "))
+        self.Send.setText(_translate("MainWindow", "Отправить"))
+        self.menuFile.setTitle(_translate("MainWindow", "File"))
+        self.menuAbout.setTitle(_translate("MainWindow", "About"))
+        self.actionExit.setText(_translate("MainWindow", "Exit"))
+        self.actionNew_serwer.setText(_translate("MainWindow", "Server"))
+        self.actionAbout_programm.setText(_translate("MainWindow", "About programm"))
+
+

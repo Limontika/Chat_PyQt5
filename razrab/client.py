@@ -43,42 +43,59 @@ class ExampleApp(QtWidgets.QMainWindow, mydesign.Ui_MainWindow):
             rT.start()
 
     def connectuser(self):
-        self.s.send((self.alias).encode("utf-8"))
+        self.s.send((self.alias).encode())
 
     def chat(self):
         while True:
-            try:
-                while True:
-                    msg = self.s.recv(2048)
-                    print(msg.decode())
-                    tmp = msg.decode("utf-8")
-                    print(json.loads(tmp))
-                    print(tmp[type])
-                    if tmp[type] == "welcome":
-                        self.Chat.append(msg.decode("utf-8"))
-                    if tmp[type] == "client_online":
-                        self.ClientOnline.append(msg.decode("utf-8"))
-
-                    # decrypt = ""
-                    # k = False
-                    #
-                    # for i in msg.decode("utf-8"):
-                    #     if i == ":":
-                    #         k = True
-                    #         decrypt += i
-                    #     elif k == False or i == " ":
-                    #         decrypt += i
-                    #     else:
-                    #         decrypt += chr(ord(i) ^ self.key)
-
-
-
-                    time.sleep(0.2)
-            except:
-                pass
+            message = self.s.recv(2048)
+            message = message.decode().split("\n")
+            print("1:->", message)
+            # print("Список потоков", threading.enumerate()[0])
+            # tmp = msg.decode()
+            # print("2:->", json.loads(tmp))
+            for msg in message:
+                if msg:
+                    tmp = json.loads(msg)
+                    print("3:->", tmp.get("type"))
+                    if tmp.get("type") == "welcome":
+                        self.Chat.append(tmp.get("data"))
+                    if tmp.get("type") == "client_online":
+                        for item in tmp.get("data"):
+                            self.ClientOnline.clear()
+                            self.ClientOnline.append(item)
+            # try:
+            #     while True:
+            #         msg = self.s.recv(2048)
+            #         print("1:->",msg.decode())
+            #         tmp = msg.decode()
+            #         print("2:->", json.loads(tmp))
+            #         tmp = json.loads(tmp)
+            #         print("3:->", tmp.get("type"))
+            #         if tmp.get("type") == "welcome":
+            #             self.Chat.append(tmp.get("data"))
+            #         if tmp.get("type") == "client_online":
+            #             self.ClientOnline.append(msg.decode())
+            #
+            #         # decrypt = ""
+            #         # k = False
+            #         #
+            #         # for i in msg.decode():
+            #         #     if i == ":":
+            #         #         k = True
+            #         #         decrypt += i
+            #         #     elif k == False or i == " ":
+            #         #         decrypt += i
+            #         #     else:
+            #         #         decrypt += chr(ord(i) ^ self.key)
+            #
+            #
+            #
+            #         time.sleep(0.2)
+            # except:
+            #     pass
 
     def disconnectuser(self):
-        self.s.send((self.alias).encode("utf-8"))
+        self.s.send((self.alias).encode())
         self.s.close()
 
     def send(self):
@@ -93,7 +110,7 @@ class ExampleApp(QtWidgets.QMainWindow, mydesign.Ui_MainWindow):
         # Конец
 
         if message != "":
-            self.s.send((message).encode("utf-8"))
+            self.s.send((message).encode())
 
         self.InputSend.setText("")
         self.InputSend.setFocus()

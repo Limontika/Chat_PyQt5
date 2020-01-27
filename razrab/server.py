@@ -18,25 +18,27 @@ def receving(conn):
     """
 
     name = conn.recv(2048)
-    name_chat = name.decode("utf-8")
+    name_chat = name.decode()
 
     welcome = 'Welcome ' + name_chat
     msg = {"type": "welcome", "data": welcome}
-    conn.send(json.dumps(msg).encode())
+    conn.send(f"{json.dumps(msg)}\n".encode())
+
     welcome_for_all_users = "%s has joined the chat!" % name_chat
     msg = {"type": "welcome", "data": welcome_for_all_users}
+    print(msg)
     broadcast(json.dumps(msg))
+
     clients[conn] = name_chat
     clients_list.append(name_chat)
     msg = {"type": "client_online", "data": clients_list}
     broadcast(json.dumps(msg))
-    print("отправился список пользователей:", msg)
 
     while True:
         try:
             while True:
                 msg = conn.recv(2048)
-                print(msg.decode("utf-8"))
+                print(msg.decode())
                 broadcast(name_chat + ": " + json.dumps(msg))
         except:
             conn.close()
@@ -50,8 +52,9 @@ def receving(conn):
 
 
 def broadcast(msg):
+    print(msg)
     for sock in clients:
-        sock.send(msg.encode())
+        sock.send(f"{msg}\n".encode())
 
 port = 9091
 

@@ -1,5 +1,7 @@
 import socket
 import threading
+import json
+from datetime import timezone, datetime
 import pickle
 
 
@@ -10,24 +12,35 @@ def init_connection():
 
 
 def receving(conn):
+    """
+    Обработка сообщений, формирование json ответа клиенту.
+    input: conn - установленное соединенние
+    output: msg - сообщение
+    """
 
     name = conn.recv(2048)
-    name_chat = name.decode("utf-8")
+    name_chat = name.decode()
 
     welcome = 'Welcome ' + name_chat
-    conn.send(bytes(welcome, "utf8"))
-    msg = "%s has joined the chat!" % name_chat
-    broadcast(bytes(msg, "utf8"))
+    msg = {"type": "welcome", "data": welcome}
+    conn.send(f"{json.dumps(msg)}\n".encode())
+
+    welcome_for_all_users = "%s has joined the chat!" % name_chat
+    msg = {"type": "welcome", "data": welcome_for_all_users}
+    # print(msg)
+    broadcast(json.dumps(msg))
+
     clients[conn] = name_chat
     clients_list.append(name_chat)
-    print(clients_list)
+    msg = {"type": "client_online", "data": clients_list}
+    broadcast(json.dumps(msg))
 
     while True:
         try:
             while True:
-                msg = conn.recv(2048)
-                print(msg.decode("utf-8"))
-                broadcast(msg, name_chat + ": ")
+                message = conn.recv(2048)
+                msg = {"type": "message", "data": "{}-> {} {:>15}".format(name_chat, message.decode(), datetime.now().strftime('%H:%M'))}
+                broadcast(json.dumps(msg))
         except:
             conn.close()
             for i in range(len(clients_list)-1):
@@ -35,13 +48,21 @@ def receving(conn):
                     del clients_list[i]
                     break
             del clients[conn]
-            broadcast(bytes("%s has left the chat." % name_chat, "utf8"))
+
+            msg = {"type": "client_online", "data": clients_list}
+            broadcast(json.dumps(msg))
+
+            client_disconect = "%s has left the chat." % name_chat
+            msg = {"type": "client_disconect", "data": client_disconect}
+            broadcast(json.dumps(msg))
+
             break
 
 
-def broadcast(msg, prefix=""):
+def broadcast(msg):
+    print(msg)
     for sock in clients:
-        sock.send(bytes(prefix, "utf8") + msg)
+        sock.send(f"{msg}\n".encode())
 
 port = 9091
 

@@ -1,6 +1,7 @@
 import socket
 import threading
 import json
+from datetime import timezone, datetime
 import pickle
 
 
@@ -16,7 +17,6 @@ def receving(conn):
     input: conn - установленное соединенние
     output: msg - сообщение
     """
-
     name = conn.recv(2048)
     name_chat = name.decode()
 
@@ -26,7 +26,7 @@ def receving(conn):
 
     welcome_for_all_users = "%s has joined the chat!" % name_chat
     msg = {"type": "welcome", "data": welcome_for_all_users}
-    print(msg)
+    # print(msg)
     broadcast(json.dumps(msg))
 
     clients[conn] = name_chat
@@ -37,9 +37,9 @@ def receving(conn):
     while True:
         try:
             while True:
-                msg = conn.recv(2048)
-                print(msg.decode())
-                broadcast(name_chat + ": " + json.dumps(msg))
+                message = conn.recv(2048)
+                msg = {"type": "message", "data": "{}-> {} {:>15}".format(name_chat, message.decode(), datetime.now().strftime('%H:%M'))}
+                broadcast(json.dumps(msg))
         except:
             conn.close()
             for i in range(len(clients_list)-1):
@@ -47,9 +47,15 @@ def receving(conn):
                     del clients_list[i]
                     break
             del clients[conn]
-            broadcast("%s has left the chat." % name_chat)
-            break
 
+            msg = {"type": "client_online", "data": clients_list}
+            broadcast(json.dumps(msg))
+
+            client_disconect = "%s has left the chat." % name_chat
+            msg = {"type": "client_disconect", "data": client_disconect}
+            broadcast(json.dumps(msg))
+
+            break
 
 def broadcast(msg):
     print(msg)

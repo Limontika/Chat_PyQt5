@@ -4,26 +4,39 @@ import threading
 import json
 import sys
 import mydesign
+import change_server
 from PyQt5 import QtWidgets, QtCore
 
 
+class ChangeForm(QtWidgets.QMainWindow, change_server.Ui_Change_server):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)  # Это нужно для инициализации нашего дизайна
+        self.pushButton_Cancle.clicked.connect(self.close)
+        self.pushButton_Ok.clicked.connect(self.change_server)
+
+    def change_server(self):
+        ExampleApp.host = self.lineEdit_ip.text()
+        ExampleApp.port = self.lineEdit_port.text()
+        self.close()
+
 class ExampleApp(QtWidgets.QMainWindow, mydesign.Ui_MainWindow):
     def __init__(self):
-        # Это здесь нужно для доступа к переменным, методам
-        # и т.д. в файле design.py
         super().__init__()
         self.setupUi(self)  # Это нужно для инициализации нашего дизайна
         self.key = 8194
         self.action_Connect.triggered.connect(self.initconnect)
+        self.action_ChangeServer.triggered.connect(self.changeServer)
         self.InputSend.returnPressed.connect(self.send)
         self.Send.clicked.connect(self.send)
 
     def initconnect(self):
         global s
         self.host = socket.gethostbyname(socket.gethostname())
+        self.port = 9092
         # print(self.host)
         # self.host = "185.139.69.158"
-        server = (self.host, 9092)
+        server = (self.host, self.port)
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((server))
@@ -107,6 +120,12 @@ class ExampleApp(QtWidgets.QMainWindow, mydesign.Ui_MainWindow):
 
     def closeEvent(self):
         self.disconnectuser()
+
+    def changeServer(self):
+        print("gg")
+        self.window = ChangeForm()
+        print(self.window.show())
+
 
 
 class BrowserChat(QtCore.QObject):

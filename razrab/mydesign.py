@@ -12,7 +12,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.setWindowModality(QtCore.Qt.ApplicationModal)
         MainWindow.setEnabled(True)
         MainWindow.resize(537, 383)
         MainWindow.setMinimumSize(QtCore.QSize(537, 383))
@@ -96,10 +95,10 @@ class Ui_MainWindow(object):
         self.actionAbout_programm.setObjectName("actionAbout_programm")
         self.action_Connect = QtWidgets.QAction(MainWindow)
         self.action_Connect.setObjectName("action_Connect")
-        self.action_NewServer = QtWidgets.QAction(MainWindow)
-        self.action_NewServer.setObjectName("action_NewServer")
+        self.action_ChangeServer = QtWidgets.QAction(MainWindow)
+        self.action_ChangeServer.setObjectName("action_ChangeServer")
         self.menuServer.addAction(self.action_Connect)
-        self.menuServer.addAction(self.action_NewServer)
+        self.menuServer.addAction(self.action_ChangeServer)
         self.menuFile.addAction(self.menuServer.menuAction())
         self.menuFile.addAction(self.actionExit)
         self.menuAbout.addAction(self.actionAbout_programm)
@@ -122,6 +121,6 @@ class Ui_MainWindow(object):
         self.actionExit.setText(_translate("MainWindow", "Exit"))
         self.actionAbout_programm.setText(_translate("MainWindow", "About programm"))
         self.action_Connect.setText(_translate("MainWindow", "Подключиться"))
-        self.action_NewServer.setText(_translate("MainWindow", "Создать новый"))
+        self.action_ChangeServer.setText(_translate("MainWindow", "Сменить сервер"))
 
 

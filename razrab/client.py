@@ -14,8 +14,7 @@ class ExampleApp(QtWidgets.QMainWindow, mydesign.Ui_MainWindow):
         super().__init__()
         self.setupUi(self)  # Это нужно для инициализации нашего дизайна
         self.key = 8194
-        self.initconnect()
-        self.registration()
+        self.action_Connect.triggered.connect(self.initconnect)
         self.InputSend.returnPressed.connect(self.send)
         self.Send.clicked.connect(self.send)
 
@@ -24,10 +23,12 @@ class ExampleApp(QtWidgets.QMainWindow, mydesign.Ui_MainWindow):
         self.host = socket.gethostbyname(socket.gethostname())
         # print(self.host)
         # self.host = "185.139.69.158"
-        server = (self.host, 9091)
+        server = (self.host, 9092)
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((server))
+
+        self.registration()
 
     def registration(self):
 

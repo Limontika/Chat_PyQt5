@@ -62,7 +62,7 @@ def broadcast(msg):
     for sock in clients:
         sock.send(f"{msg}\n".encode())
 
-port = 9091
+port = 9092
 
 clients = {}
 clients_list = []

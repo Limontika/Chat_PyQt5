@@ -1,6 +1,7 @@
 import socket
 import time
 import threading
+
 import json
 import sys
 import mydesign
@@ -8,7 +9,9 @@ import change_server
 from PyQt5 import QtWidgets, QtCore
 
 
-class ChangeForm(QtWidgets.QMainWindow, change_server.Ui_Change_server):
+class ChangeForm(QtWidgets.QMainWindow, change_server.Ui_Change_server, QtCore.QObject):
+    config = QtCore.pyqtSignal(str, int)
+
     def __init__(self):
         super().__init__()
         self.setupUi(self)  # Это нужно для инициализации нашего дизайна
@@ -16,34 +19,53 @@ class ChangeForm(QtWidgets.QMainWindow, change_server.Ui_Change_server):
         self.pushButton_Ok.clicked.connect(self.change_server)
 
     def change_server(self):
-        ExampleApp.host = self.lineEdit_ip.text()
-        ExampleApp.port = self.lineEdit_port.text()
+        self.config.emit(self.lineEdit_ip.text(), int(self.lineEdit_port.text()))
         self.close()
 
 class ExampleApp(QtWidgets.QMainWindow, mydesign.Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)  # Это нужно для инициализации нашего дизайна
-        self.key = 8194
+        # self.key = 8194
+        print("Старт программы")
+        self.host = socket.gethostbyname(socket.gethostname())
+        # self.host = "185.139.69.158"
+        self.port = 9091
         self.action_Connect.triggered.connect(self.initconnect)
         self.action_ChangeServer.triggered.connect(self.changeServer)
         self.InputSend.returnPressed.connect(self.send)
         self.Send.clicked.connect(self.send)
 
+    def config(self, host_ip, port_numb):
+        self.host = host_ip
+        self.port = port_numb
+        self.initconnect()
+
     def initconnect(self):
         global s
-        self.host = socket.gethostbyname(socket.gethostname())
-        self.port = 9092
-        # print(self.host)
-        # self.host = "185.139.69.158"
+        # if tmp_host and tmp_port:
+        #     self.host = tmp_host
+        #     self.port = tmp_port
+
+        print(self.host, self.port)
         server = (self.host, self.port)
 
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((server))
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((server))
 
-        self.registration()
+            print("socet-> ", s)
+            self.registration()
+        except:
+            btn_message_box = QtWidgets.QMessageBox.question(self, 'Error connection', "Failed to connect to server",
+                                                             QtWidgets.QMessageBox.Retry | QtWidgets.QMessageBox.Cancel,
+                                                             QtWidgets.QMessageBox.Retry)
+            if btn_message_box == QtWidgets.QMessageBox.Retry:
+                self.initconnect()
 
     def registration(self):
+
+        print("Работает регистрация")
 
         self.alias, ok = QtWidgets.QInputDialog.getText(
             self, 'Your NAME', 'Enter your name:')
@@ -81,7 +103,7 @@ class ExampleApp(QtWidgets.QMainWindow, mydesign.Ui_MainWindow):
                     for item in tmp.get("data"):
                         self.ClientOnline.append(item)
                 if tmp.get("type") == "message":
-                    self.Chat.append(tmp.get("data"))
+                    self.Chat.append("{}-> {} {:>15}".format(tmp.get("name_user"),tmp.get("data"), tmp.get("time_message")))
                 if tmp.get("type") == "client_disconect":
                     self.Chat.append(tmp.get("data"))
 
@@ -122,10 +144,10 @@ class ExampleApp(QtWidgets.QMainWindow, mydesign.Ui_MainWindow):
         self.disconnectuser()
 
     def changeServer(self):
-        print("gg")
-        self.window = ChangeForm()
-        print(self.window.show())
-
+        self.change = ChangeForm()
+        self.change.show()
+        self.change.config[str, int].connect(self.config)
+        # self.host, self.port = self.change.get_output()
 
 
 class BrowserChat(QtCore.QObject):

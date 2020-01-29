@@ -38,7 +38,7 @@ def receving(conn):
         try:
             while True:
                 message = conn.recv(2048)
-                msg = {"type": "message", "data": "{}-> {} {:>15}".format(name_chat, message.decode(), datetime.now().strftime('%H:%M'))}
+                msg = {"type": "message",  "name_user": name_chat, "data": message.decode(), "time_message": datetime.now().strftime('%H:%M')}
                 broadcast(json.dumps(msg))
         except:
             conn.close()

@@ -34,7 +34,7 @@ class ExampleApp(QtWidgets.QMainWindow, mydesign.Ui_MainWindow):
         global s
         # self.host = socket.gethostbyname(socket.gethostname())
         self.port = 9092
-        self.host = "your_addr"
+        self.host = "198.46.223.252"
         server = (self.host, self.port)
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -72,7 +72,7 @@ class ExampleApp(QtWidgets.QMainWindow, mydesign.Ui_MainWindow):
         for msg in object:
             if msg:
                 tmp = json.loads(msg)
-                print("3:->", tmp.get("type"))
+                print("->", tmp.get("type"))
                 if tmp.get("type") == "welcome":
                     self.Chat.append(tmp.get("data"))
                 if tmp.get("type") == "client_online":

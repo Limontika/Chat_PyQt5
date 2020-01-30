@@ -33,6 +33,7 @@ class ExampleApp(QtWidgets.QMainWindow, mydesign.Ui_MainWindow):
         self.port = 9091
         self.action_Connect.triggered.connect(self.initconnect)
         self.action_ChangeServer.triggered.connect(self.changeServer)
+        self.actionExit.triggered.connect(self.close)
         self.InputSend.returnPressed.connect(self.send)
         self.Send.clicked.connect(self.send)
 
@@ -43,9 +44,6 @@ class ExampleApp(QtWidgets.QMainWindow, mydesign.Ui_MainWindow):
 
     def initconnect(self):
         global s
-        # if tmp_host and tmp_port:
-        #     self.host = tmp_host
-        #     self.port = tmp_port
 
         print(self.host, self.port)
         server = (self.host, self.port)
@@ -65,7 +63,6 @@ class ExampleApp(QtWidgets.QMainWindow, mydesign.Ui_MainWindow):
 
     def registration(self):
 
-        print("Работает регистрация")
 
         self.alias, ok = QtWidgets.QInputDialog.getText(
             self, 'Your NAME', 'Enter your name:')
@@ -120,8 +117,11 @@ class ExampleApp(QtWidgets.QMainWindow, mydesign.Ui_MainWindow):
                     #         decrypt += chr(ord(i) ^ self.key)
 
     def disconnectuser(self):
-        s.send((self.alias).encode())
-        s.close()
+        try:
+            s.send((self.alias).encode())
+            s.close()
+        except:
+            print("выход, не было подключения")
 
     def send(self):
 
@@ -140,8 +140,16 @@ class ExampleApp(QtWidgets.QMainWindow, mydesign.Ui_MainWindow):
         self.InputSend.setText("")
         self.InputSend.setFocus()
 
-    def closeEvent(self):
-        self.disconnectuser()
+    def closeEvent(self, event):
+        reply = QtWidgets.QMessageBox.question(self, 'Message',
+                                           "Are you sure to quit?", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+
+        if reply == QtWidgets.QMessageBox.Yes:
+            self.disconnectuser()
+            event.accept()
+        else:
+            event.ignore()
+
 
     def changeServer(self):
         self.change = ChangeForm()

@@ -1,5 +1,8 @@
-# Chat_PyQt5
-Чат на PyQt5
+# My litlle chat
 
-Release - последния версия ПО 
-razrab - разработка новых фич
+This chat is designed for the overall development of professional competencies in the field of network programming.
+
+### The project structure is divided into two branches:
+***Release*** - Only current versions are uploaded
+***
+***Development*** - there is just some kind of game

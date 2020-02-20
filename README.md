@@ -12,3 +12,15 @@ This branch contains the correct chat versions. You can download the sources, or
 #### Official server: ***************************************
 
 You can also take server.py and deploy it on your server.
+
+***
+
+# Client
+
+Чтобы начать пользоваться клиентом скачайте и запустите client.exe
+
+***
+
+# Server
+
+Для управления сервером необходимо запустить pip install requirements.txt ***((or pip3) only python version 3.7+)***. 
